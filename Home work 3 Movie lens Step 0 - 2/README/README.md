@@ -40,8 +40,11 @@ erDiagram
 
     USERS ||--o{ RATINGS : rates
     MOVIES ||--o{ RATINGS : receives
-    MOVIES ||--|{ MOVIE_GENRES : has
-    GENRES
+    MOVIES ||--o{ MOVIE_GENRES : has
+    GENRES ||--o{ MOVIE_GENRES : categorizes
+```
+
+
 
 
 
@@ -57,8 +60,19 @@ Step 2(c)
 
 
 Constraints & Unenforced Claims:
-  Enforced Constraints:** Column-level checks restrict ratings to valid integers (`CHECK (rating >= 1 AND rating <= 5)`), gender to valid categorical strings (`'M'`, `'F'`, `'O'`), and foreign key constraints enforce referential integrity across all tables.
-  Unenforced Claims: Claims such as strict sequential numbering (e.g., ensuring no missing IDs in the `user_id` sequence from 1 to 943) cannot be guaranteed by standard table constraints. This claim must be validated post-load by running queries that check for ID gaps or compare total row counts against `MAX(user_id)`.
+
+Enforced by constraints (sql/schema.sql):
+- Ratings are 1–5 (README): CHECK (rating BETWEEN 1 AND 5)
+- User IDs are 1–943 and movie IDs are 1–1682 (README): CHECK ... BETWEEN
+- Timestamps are Unix seconds (README): CHECK (timestamp > 0)
+- Genre IDs are 0–18 (u.genre file): CHECK (genre_id BETWEEN 0 AND 18)
+- Occupation is one of the 21 in u.occupation: CHECK (occupation IN (...))
+- Gender is M or F (observed in the data; the README only names the field): CHECK (gender IN ('M','F'))
+- Every rating points to a real user and movie: FOREIGN KEY constraints
+
+Claims no constraint can enforce, checked with queries after loading (Step 4):
+- IDs are consecutive with no gaps: compare COUNT(*) with MAX(id).
+- Every user rated at least 20 movies: GROUP BY user_id HAVING COUNT(*) < 20 should return no rows.
 
 
 
@@ -69,4 +83,4 @@ Step 2(d)
 Data Type for `zip_code`:
   The `zip_code` field is typed as `TEXT` (or `VARCHAR`) rather than `INTEGER`. This is necessary because:
   1. Standard numerical types strip leading zeros (e.g., U.S. ZIP code `02138` would incorrectly become `2138`).
-  2. The MovieLens dataset contains alphanumeric and non-standard postal codes (e.g., international ZIP codes like `V7X 1C5` or alphanumeric strings like `E2A48`), which would fail to parse or cause data loss if cast to integers. ||--|{ MOVIE_GENRES : categorizes6a3
+  2. 18 users have non-numeric postal codes (e.g., `E2A4H`, `T8H1N`, `V3N4P`). As INTEGER, these values could not be stored at all: under a STRICT table SQLite would refuse those rows, and a non-STRICT table would quietly store them as text in a numeric column.
