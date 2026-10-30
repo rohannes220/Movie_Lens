@@ -1,3 +1,25 @@
+## Step 0: Describe the Raw Data
+
+Shapes & Previews: Report the exact row and column counts for u.user, u.item, and u.data, along with a preview of the first few rows.
+Tidiness: Define what each row represents and judge whether each file is tidy (e.g., pointing out if any file breaks tidy data rules, like storing multiple variables in a single column).
+README Gaps: Document any discrepancies or missing details in the dataset's official README regarding delimiters, character encodings, unexpected blank values, or column data types
+Exploratory Charts: Include interpretations for your two raw data charts (such as the distribution of ratings and the number of ratings per user) and note what potential data issues they suggest checking later.
+
+
+## Step 1: Acquire the Data Reproducibly
+
+Documentation in README: Although this step relies on your src/download.py script and .gitignore setup rather than the write-up itself, your README.md must document the source URL, the download date, and the zip file's checksum.
+
+
+## Step 2: Design the Schema
+
+Schema Diagram: Reference your Mermaid diagram or image mapping out tables, primary keys, and foreign keys.
+Tidy Genres: Explain why you stored the 19 genre flags in a separate, normalized/tidy table rather than as 19 individual columns in the movies table.
+Constraints: List every claim the README makes about a single column or row and explain how your sql/schema.sql constraints enforce them (and how you plan to check any claims that cannot be enforced via constraints).
+Zip Code Type: Provide a 2–3 sentence defense for the data type choice you selected for user zip codes (e.g., TEXT vs. INTEGER).
+
+
+
 ## Step 3 – Load the data
 
 ### 3a. Predictions (written before running load.py)
