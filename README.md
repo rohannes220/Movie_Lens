@@ -1,189 +1,194 @@
-Step 1
+# MovieLens 100K in SQLite
 
-Data Provenance
-**Source U**: `https://files.grouplens.org/datasets/movielens/ml-100k.zip **Download De**: 2026-10-28 09:15:- **SHA-256 Checum**: `50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c
+**DS5110 – Essentials of Data Science | Homework 3**
+
+## Project Overview
+
+This project uses the GroupLens MovieLens 100K dataset to build and analyze a relational database using SQLite. The database uses STRICT tables, primary keys, foreign keys, and CHECK constraints to enforce data integrity.
+
+The project covers reproducible data acquisition, database design, data loading, validation, SQL analysis, and comparisons between SQL and pandas. Invalid records are logged separately, and the database can be rebuilt from scratch.
+
+## 1. Data Provenance
+
+- **Dataset:** MovieLens 100K, GroupLens Research, University of Minnesota
+- **Source URL:** https://files.grouplens.org/datasets/movielens/ml-100k.zip
+- **Download Date:** October 28, 2026
+- **SHA-256 Checksum:** `50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229`
+
+The dataset is downloaded through `src/download.py` and extracted into `raw/`. The raw data is excluded from Git using `.gitignore` because the dataset's terms of use restrict redistribution.
+
+**Dataset Citation:**
+
+Harper, F. Maxwell, and Joseph A. Konstan. (2015). *The MovieLens Datasets: History and Context.* ACM Transactions on Interactive Intelligent Systems, 5(4), Article 19.
+
+https://doi.org/10.1145/2827872
+
+## 2. Database Schema
+
+The database contains five tables:
+
+- **users:** Stores user information, including age, gender, occupation, and ZIP code.
+- **movies:** Stores movie titles, release dates, and IMDb URLs.
+- **genres:** Stores genre IDs and names.
+- **movie_genres:** Connects movies to their genres.
+- **ratings:** Stores user ratings and timestamps.
+
+### Entity Relationship Diagram
+
+<img width="948" height="663" alt="Screenshot 2026-10-30 at 1 33 51 PM" src="https://github.com/user-attachments/assets/69b673fd-fd17-41fe-87fd-475f88b86f0e" />
 
 
-Step 2(a)
+### Genre Normalization
 
+The original MovieLens dataset represents genres using 19 binary columns.
 
-```mermaid
-erDiagram
-    USERS {
-        int user_id PK
-        int age
-        string gender
-        string occupation
-        string zip_code
-    }
-    MOVIES {
-        int movie_id PK
-        string movie_title
-        string release_date
-        string video_release_date
-        string imdb_url
-    }
-    GENRES {
-        int genre_id PK
-        string genre_name
-    }
-    MOVIE_GENRES {
-        int movie_id PK, FK
-        int genre_id PK, FK
-    }
-    RATINGS {
-        int user_id PK, FK
-        int movie_id PK, FK
-        int rating
-        int timestamp
-    }
+Instead of retaining these columns in the `movies` table, we created a junction table called `movie_genres`.
 
-    USERS ||--o{ RATINGS : rates
-    MOVIES ||--o{ RATINGS : receives
-    MOVIES ||--o{ MOVIE_GENRES : has
-    GENRES ||--o{ MOVIE_GENRES : categorizes
+Each row represents a relationship between one movie and one genre. This produces a normalized, long-format structure and avoids storing numerous binary flags.
+
+It also allows additional genres to be introduced without changing the structure of the `movies` table.
+
+## 3. Database Constraints
+
+The database uses STRICT tables and SQL constraints to enforce data integrity.
+
+### Enforced Constraints
+
+- Ratings must be between 1 and 5.
+- User IDs must be between 1 and 943.
+- Movie IDs must be between 1 and 1682.
+- Rating timestamps must be positive integers.
+- Genre IDs must be between 0 and 18.
+- Occupations must match one of the 21 documented occupations.
+- Gender values must be either `M` or `F`, consistent with the dataset.
+- Foreign keys ensure that ratings reference existing users and movies, and movie-genre relationships reference valid movies and genres.
+
+### Claims Validated Through SQL
+
+Certain dataset claims cannot be fully enforced using ordinary column-level constraints. These are checked after loading the data.
+
+**Consecutive IDs**
+
+The dataset states that user and movie IDs are consecutive. We validate this by checking for missing IDs within the expected ranges.
+
+**Minimum Ratings per User**
+
+The dataset states that every user rated at least 20 movies.
+
+We validate this using:
+
+```sql
+SELECT user_id
+FROM ratings
+GROUP BY user_id
+HAVING COUNT(*) < 20;
 ```
 
+The expected result is zero rows.
 
+The validation queries and their results are documented in the project's SQL files and write-up.
 
+## 4. ZIP Code Data Type
 
+The `zip_code` column is stored as `TEXT` instead of `INTEGER`.
 
-Step 2(b)
+This decision preserves leading zeros in ZIP codes. For example, `02138` would incorrectly become `2138` if stored as an integer.
 
+Additionally, some records contain alphanumeric postal codes, such as `E2A4H`, `T8H1N`, and `V3N4P`.
 
-Storing Genres in Tidy Form:
-  Instead of retaining 19 separate binary columns (`genre_0`, `genre_1`, etc.) in the `movies` table, the schema uses a junction table (`movie_genres`). This unpivots the data into a normalized (long) structure, satisfying First Normal Form (1NF). It avoids storing redundant sparse zeros and lets you add new genres in the future without changing the database schema.
+Using `TEXT` preserves the original values without losing information.
 
+## 5. How to Run the Project
 
+### Requirements
 
-Step 2(c)
+- Python 3
+- SQLite 3.37 or newer
+- Make
 
+SQLite 3.37 or newer is required because the schema uses STRICT tables.
 
-Constraints & Unenforced Claims:
+To check the installed SQLite version:
 
-Enforced by constraints (sql/schema.sql):
-- Ratings are 1–5 (README): CHECK (rating BETWEEN 1 AND 5)
-- User IDs are 1–943 and movie IDs are 1–1682 (README): CHECK ... BETWEEN
-- Timestamps are Unix seconds (README): CHECK (timestamp > 0)
-- Genre IDs are 0–18 (u.genre file): CHECK (genre_id BETWEEN 0 AND 18)
-- Occupation is one of the 21 in u.occupation: CHECK (occupation IN (...))
-- Gender is M or F (observed in the data; the README only names the field): CHECK (gender IN ('M','F'))
-- Every rating points to a real user and movie: FOREIGN KEY constraints
+```bash
+python3 -c "import sqlite3; print(sqlite3.sqlite_version)"
+```
 
-Claims no constraint can enforce, checked with queries after loading (Step 4):
-- IDs are consecutive with no gaps: compare COUNT(*) with MAX(id).
-- Every user rated at least 20 movies: GROUP BY user_id HAVING COUNT(*) < 20 should return no rows.
+### Build the Database
 
-
-
-Step 2(d)
-
-
-
-Data Type for `zip_code`:
-  The `zip_code` field is typed as `TEXT` (or `VARCHAR`) rather than `INTEGER`. This is necessary because:
-  1. Standard numerical types strip leading zeros (e.g., U.S. ZIP code `02138` would incorrectly become `2138`).
-  2. 18 users have non-numeric postal codes (e.g., `E2A4H`, `T8H1N`, `V3N4P`). As INTEGER, these values could not be stored at all: under a STRICT table SQLite would refuse those rows, and a non-STRICT table would quietly store them as text in a numeric column.
-
-
-
-
-# MovieLens 100K in SQLite (DS5110 Homework 3)
-
-Loads the GroupLens MovieLens 100K dataset into a SQLite database whose schema
-enforces the dataset README's claims, then answers questions about it in SQL.
-
-## How to run
+From the repository's root directory, run:
 
 ```bash
 make
 ```
 
-`make` downloads the data into `raw/` if it is missing, rebuilds
-`data/movielens.db` from scratch, and writes refused rows to
-`output/rejected.csv`.
+The Makefile:
 
-The tables are STRICT, which needs SQLite 3.37 or newer. Check yours with
-`python3 -c "import sqlite3; print(sqlite3.sqlite_version)"`. If it is older,
-run `make PYTHON=python` with a newer Python (for example a conda environment).
+1. Downloads the MovieLens 100K dataset if it is missing.
+2. Extracts the dataset into `raw/`.
+3. Rebuilds `data/movielens.db` from scratch.
+4. Loads the records into the database.
+5. Logs rejected rows to `output/rejected.csv`.
 
-Run any query, for example:
+If the installed Python environment uses an older SQLite version, use a newer Python environment that includes SQLite 3.37 or later.
+
+### Running SQL Queries
+
+The SQL queries are stored in `sql/queries/`.
+
+For example, the following command executes the query identifying the ten most-rated movies:
 
 ```bash
-python -c "import sqlite3; print(sqlite3.connect('data/movielens.db').execute(open('sql/queries/q1_top10_most_rated.sql').read()).fetchall())"
+python3 -c "import sqlite3; print(sqlite3.connect('data/movielens.db').execute(open('sql/queries/q1_top10_most_rated.sql').read()).fetchall())"
 ```
 
-## Data source
+## 6. Repository Structure
 
-- **Dataset:** MovieLens 100K, GroupLens Research, University of Minnesota
-- **URL:** https://files.grouplens.org/datasets/movielens/ml-100k.zip
-- **Downloaded:** 2026-10-28
-- **SHA-256 of the zip:** `50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229`
-
-The data is not committed. Its license does not allow redistribution, so
-`src/download.py` fetches it and `raw/` is in `.gitignore`. Cite:
-F. Maxwell Harper and Joseph A. Konstan. 2015. The MovieLens Datasets: History
-and Context. ACM TiiS 5, 4, Article 19. https://doi.org/10.1145/2827872
-
-## Schema
-
-```mermaid
-erDiagram
-    USERS {
-        int user_id PK
-        int age
-        string gender
-        string occupation
-        string zip_code
-    }
-    MOVIES {
-        int movie_id PK
-        string movie_title
-        string release_date
-        string video_release_date
-        string imdb_url
-    }
-    GENRES {
-        int genre_id PK
-        string genre_name
-    }
-    MOVIE_GENRES {
-        int movie_id PK, FK
-        int genre_id PK, FK
-    }
-    RATINGS {
-        int user_id PK, FK
-        int movie_id PK, FK
-        int rating
-        int timestamp
-    }
-
-    USERS ||--o{ RATINGS : rates
-    MOVIES ||--o{ RATINGS : receives
-    MOVIES ||--o{ MOVIE_GENRES : has
-    GENRES ||--o{ MOVIE_GENRES : categorizes
-```
-
-## Repository layout
-
-| Path | What it is |
+| Path | Description |
 |---|---|
-| `src/download.py` | Downloads and unpacks the dataset into `raw/` |
-| `src/load.py` | Builds `data/movielens.db`, logs refused rows |
-| `sql/schema.sql` | STRICT tables, keys and constraints |
-| `sql/queries/` | One file per Step 4 claim and Step 5 question |
-| `output/rejected.csv` | Rows the schema refused |
-| `WRITEUP.md` | Predictions, counts and explanations |
+| `src/download.py` | Downloads and extracts the dataset |
+| `src/load.py` | Loads data and logs rejected records |
+| `sql/schema.sql` | Defines the database tables and constraints |
+| `sql/queries/` | Contains SQL validation and analysis queries |
+| `raw/` | Stores downloaded dataset files |
+| `data/movielens.db` | Generated SQLite database |
+| `output/rejected.csv` | Contains rejected rows and SQLite error messages |
+| `WRITEUP.md` | Contains predictions, actual counts, explanations, and analysis |
+| `Makefile` | Automates the database build |
 
-## Use of AI assistants
+## 7. Data Validation and Rejected Rows
 
-Claude (Anthropic) was used to draft `src/load.py`, `src/download.py`, the
-`Makefile` and the SQL query files, and to explain the syntax and reasoning
-behind them. It also helped draft parts of `WRITEUP.md`. I ran every script and
-query myself, checked the results against the data, and wrote the predictions.
+The data loading process checks records against the constraints defined in `sql/schema.sql`.
 
-ChatGPT was helped with understanding SQL concepts, specifically with CTE and subqueries. I also used it to explain the NOT IN vs NOT Exists because I was not sure about it. It was also used in Step 7 to help me do pandas comparisons and it was used to hep me understand code. 
+Records that violate these constraints are recorded in `output/rejected.csv`, along with the corresponding SQLite error messages.
 
+The raw dataset is not manually edited. Any corrections, mappings, or exclusions are handled in the loading script.
 
-## Contribution
- Ehsan responsibles for Step 0 (exploratory data analysis, charts, and README gap analysis) and Step 1 (reproducible download script and checksum logging). Handled Step 2 (schema design, Mermaid diagram, and foreign key constraints). Also contributed to drafting portions of the write-up.
+The predicted and actual row counts, differences, and explanations are documented in `WRITEUP.md`.
+
+## 8. Use of AI Assistants
+
+AI assistants were used to support development and understanding throughout the assignment.
+
+**Claude (Anthropic)** was used to help draft `src/load.py`, `src/download.py`, the Makefile, SQL queries, and portions of `WRITEUP.md`. The generated code was executed and its results checked against the dataset.
+
+**ChatGPT (OpenAI)** was used to explain SQL concepts, including Common Table Expressions (CTEs), subqueries, and the differences between `NOT IN` and `NOT EXISTS`. It also assisted with understanding the pandas comparisons in Step 7 and explaining portions of the code.
+
+AI tools were used for coding assistance, clarification, and learning. The team remained responsible for reviewing the work, validating the results, and interpreting the findings.
+
+## 9. Team Contributions
+
+**Ehsan**
+- Step 0: Raw data exploration, charts, and documentation gap analysis.
+- Step 1: Reproducible dataset download and checksum documentation.
+- Step 2: Database schema design, entity relationship diagram, and constraints.
+
+**Niraj**
+- Step 3: Data loading, rejected-row logging, and database construction.
+- Step 4: Validation of dataset claims using SQL.
+- Step 5: SQL queries, predicted row counts, actual results, and explanations.
+
+**Rohan**
+- Step 6: Reproducible build documentation and README.
+- Step 7: Missing-value analysis and SQL-to-pandas comparisons.
+- Step 8: Reflection on the differences between SQL and pandas.
