@@ -91,6 +91,7 @@ Claude (Anthropic) was used to draft `src/load.py`, `src/download.py`, the
 `Makefile` and the SQL query files, and to explain the syntax and reasoning
 behind them. It also helped draft parts of `WRITEUP.md`. I ran every script and
 query myself, checked the results against the data, and wrote the predictions.
+<<<<<<< HEAD
 
 
 ## Contribution
