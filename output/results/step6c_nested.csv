@@ -1,0 +1,148 @@
+movie_title,genre_name,movie_avg_rating,genre_avg_rating,total_ratings
+"Close Shave, A (1995)",Animation,4.49,3.58,112
+"Close Shave, A (1995)",Comedy,4.49,3.39,112
+"Close Shave, A (1995)",Thriller,4.49,3.51,112
+Schindler's List (1993),Drama,4.47,3.69,298
+Schindler's List (1993),War,4.47,3.82,298
+"Wrong Trousers, The (1993)",Animation,4.47,3.58,118
+"Wrong Trousers, The (1993)",Comedy,4.47,3.39,118
+Casablanca (1942),Drama,4.46,3.69,243
+Casablanca (1942),Romance,4.46,3.62,243
+Casablanca (1942),War,4.46,3.82,243
+Wallace & Gromit: The Best of Aardman Animation (1996),Animation,4.45,3.58,67
+"Shawshank Redemption, The (1994)",Drama,4.45,3.69,283
+Rear Window (1954),Mystery,4.39,3.64,209
+Rear Window (1954),Thriller,4.39,3.51,209
+"Usual Suspects, The (1995)",Crime,4.39,3.63,267
+"Usual Suspects, The (1995)",Thriller,4.39,3.51,267
+Star Wars (1977),Action,4.36,3.48,583
+Star Wars (1977),Adventure,4.36,3.5,583
+Star Wars (1977),Romance,4.36,3.62,583
+Star Wars (1977),Sci-Fi,4.36,3.56,583
+Star Wars (1977),War,4.36,3.82,583
+12 Angry Men (1957),Drama,4.34,3.69,125
+"Third Man, The (1949)",Mystery,4.33,3.64,72
+"Third Man, The (1949)",Thriller,4.33,3.51,72
+Citizen Kane (1941),Drama,4.29,3.69,198
+Some Folks Call It a Sling Blade (1993),Drama,4.29,3.69,41
+Some Folks Call It a Sling Blade (1993),Thriller,4.29,3.51,41
+To Kill a Mockingbird (1962),Drama,4.29,3.69,219
+One Flew Over the Cuckoo's Nest (1975),Drama,4.29,3.69,264
+"Silence of the Lambs, The (1991)",Drama,4.29,3.69,390
+"Silence of the Lambs, The (1991)",Thriller,4.29,3.51,390
+North by Northwest (1959),Comedy,4.28,3.39,179
+North by Northwest (1959),Thriller,4.28,3.51,179
+"Godfather, The (1972)",Action,4.28,3.48,413
+"Godfather, The (1972)",Crime,4.28,3.63,413
+"Godfather, The (1972)",Drama,4.28,3.69,413
+Secrets & Lies (1996),Drama,4.27,3.69,162
+Good Will Hunting (1997),Drama,4.26,3.69,198
+Shall We Dance? (1996),Comedy,4.26,3.39,46
+"Manchurian Candidate, The (1962)",Thriller,4.26,3.51,131
+Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb (1963),Sci-Fi,4.25,3.56,194
+Raiders of the Lost Ark (1981),Action,4.25,3.48,420
+Raiders of the Lost Ark (1981),Adventure,4.25,3.5,420
+Vertigo (1958),Mystery,4.25,3.64,179
+Vertigo (1958),Thriller,4.25,3.51,179
+Titanic (1997),Action,4.25,3.48,350
+Titanic (1997),Drama,4.25,3.69,350
+Titanic (1997),Romance,4.25,3.62,350
+Lawrence of Arabia (1962),Adventure,4.23,3.5,173
+Paths of Glory (1957),Drama,4.21,3.69,33
+"Maltese Falcon, The (1941)",Mystery,4.21,3.64,138
+"Empire Strikes Back, The (1980)",Action,4.2,3.48,367
+"Empire Strikes Back, The (1980)",Adventure,4.2,3.5,367
+"Empire Strikes Back, The (1980)",Drama,4.2,3.69,367
+"Empire Strikes Back, The (1980)",Romance,4.2,3.62,367
+"Empire Strikes Back, The (1980)",Sci-Fi,4.2,3.56,367
+"Boot, Das (1981)",Action,4.2,3.48,201
+"Boot, Das (1981)",Drama,4.2,3.69,201
+Sling Blade (1996),Drama,4.2,3.69,136
+Sling Blade (1996),Thriller,4.2,3.51,136
+As Good As It Gets (1997),Comedy,4.2,3.39,112
+As Good As It Gets (1997),Drama,4.2,3.69,112
+"Godfather: Part II, The (1974)",Action,4.19,3.48,209
+"Godfather: Part II, The (1974)",Crime,4.19,3.63,209
+"African Queen, The (1951)",Action,4.18,3.48,152
+"African Queen, The (1951)",Adventure,4.18,3.5,152
+"African Queen, The (1951)",Romance,4.18,3.62,152
+Cinema Paradiso (1988),Comedy,4.17,3.39,121
+Cinema Paradiso (1988),Romance,4.17,3.62,121
+"Princess Bride, The (1987)",Action,4.17,3.48,324
+"Princess Bride, The (1987)",Adventure,4.17,3.5,324
+"Princess Bride, The (1987)",Comedy,4.17,3.39,324
+"Princess Bride, The (1987)",Romance,4.17,3.62,324
+Amadeus (1984),Mystery,4.16,3.64,276
+L.A. Confidential (1997),Crime,4.16,3.63,297
+L.A. Confidential (1997),Mystery,4.16,3.64,297
+L.A. Confidential (1997),Thriller,4.16,3.51,297
+Fargo (1996),Crime,4.16,3.63,508
+Fargo (1996),Thriller,4.16,3.51,508
+Braveheart (1995),Action,4.15,3.48,297
+"Thin Man, The (1934)",Mystery,4.15,3.64,60
+Blade Runner (1982),Sci-Fi,4.14,3.56,275
+Chinatown (1974),Thriller,4.14,3.51,147
+Waiting for Guffman (1996),Comedy,4.13,3.39,47
+Taxi Driver (1976),Thriller,4.12,3.51,182
+Notorious (1946),Thriller,4.12,3.51,52
+"Philadelphia Story, The (1940)",Comedy,4.12,3.39,104
+"Grand Day Out, A (1992)",Animation,4.11,3.58,66
+"Grand Day Out, A (1992)",Comedy,4.11,3.39,66
+"Great Escape, The (1963)",Adventure,4.1,3.5,124
+Roman Holiday (1953),Comedy,4.1,3.39,68
+Psycho (1960),Horror,4.1,3.29,239
+Psycho (1960),Thriller,4.1,3.51,239
+Apt Pupil (1998),Thriller,4.1,3.51,160
+"Treasure of the Sierra Madre, The (1948)",Adventure,4.1,3.5,80
+Arsenic and Old Lace (1944),Comedy,4.08,3.39,115
+Arsenic and Old Lace (1944),Thriller,4.08,3.51,115
+"Wizard of Oz, The (1939)",Adventure,4.08,3.5,246
+"Wizard of Oz, The (1939)",Children's,4.08,3.35,246
+"Wizard of Oz, The (1939)",Musical,4.08,3.52,246
+Glory (1989),Action,4.08,3.48,171
+Monty Python and the Holy Grail (1974),Comedy,4.07,3.39,316
+Much Ado About Nothing (1993),Comedy,4.06,3.39,176
+"Sting, The (1973)",Comedy,4.06,3.39,241
+"39 Steps, The (1935)",Thriller,4.05,3.51,59
+Eat Drink Man Woman (1994),Comedy,4.05,3.39,80
+"Fugitive, The (1993)",Action,4.04,3.48,336
+"Fugitive, The (1993)",Thriller,4.04,3.51,336
+Alien (1979),Action,4.03,3.48,291
+Alien (1979),Horror,4.03,3.29,291
+Alien (1979),Thriller,4.03,3.51,291
+"Quiet Man, The (1952)",Comedy,4.03,3.39,67
+Strictly Ballroom (1992),Comedy,4.03,3.39,104
+"Man Who Would Be King, The (1975)",Adventure,4.03,3.5,80
+"Great Dictator, The (1940)",Comedy,4.02,3.39,46
+To Catch a Thief (1955),Comedy,4.02,3.39,50
+To Catch a Thief (1955),Thriller,4.02,3.51,50
+It Happened One Night (1934),Comedy,4.01,3.39,81
+Return of the Jedi (1983),Action,4.01,3.48,507
+Return of the Jedi (1983),Adventure,4.01,3.5,507
+Terminator 2: Judgment Day (1991),Action,4.01,3.48,295
+Duck Soup (1933),Comedy,4.0,3.39,93
+His Girl Friday (1940),Comedy,4.0,3.39,56
+Wings of Desire (1987),Comedy,4.0,3.39,57
+Babe (1995),Children's,4.0,3.35,219
+Babe (1995),Comedy,4.0,3.39,219
+Cool Hand Luke (1967),Comedy,3.99,3.39,164
+Kolya (1996),Comedy,3.99,3.39,117
+Some Like It Hot (1959),Comedy,3.98,3.39,128
+Local Hero (1983),Comedy,3.97,3.39,63
+Butch Cassidy and the Sundance Kid (1969),Comedy,3.95,3.39,216
+Young Frankenstein (1974),Comedy,3.94,3.39,200
+Young Frankenstein (1974),Horror,3.94,3.29,200
+Brassed Off (1996),Comedy,3.94,3.39,32
+"Apartment, The (1960)",Comedy,3.94,3.39,63
+"Full Monty, The (1997)",Comedy,3.93,3.39,315
+Charade (1963),Comedy,3.92,3.39,40
+M*A*S*H (1970),Comedy,3.91,3.39,206
+Annie Hall (1977),Comedy,3.91,3.39,180
+When Harry Met Sally... (1989),Comedy,3.91,3.39,290
+This Is Spinal Tap (1984),Comedy,3.91,3.39,191
+Being There (1979),Comedy,3.91,3.39,116
+Fly Away Home (1996),Children's,3.9,3.35,31
+Toy Story (1995),Children's,3.88,3.35,452
+E.T. the Extra-Terrestrial (1982),Fantasy,3.83,3.22,300
+"Shining, The (1980)",Horror,3.83,3.29,206
+"Birds, The (1963)",Horror,3.81,3.29,162
