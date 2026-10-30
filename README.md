@@ -1,6 +1,9 @@
 # MovieLens 100K in SQLite
 
 **DS5110 – Essentials of Data Science | Homework 3**
+Ehsan Hoque Akib
+Rohan Kumar
+Niranjan Sawakar
 
 ## Project Overview
 
@@ -180,7 +183,7 @@ AI assistants were used to support development and understanding throughout the 
 
 **Claude (Anthropic)** was used to help draft `src/load.py`, `src/download.py`, the Makefile, SQL queries, and portions of `WRITEUP.md`. The generated code was executed and its results checked against the dataset.
 
-**ChatGPT (OpenAI)** was used to explain SQL concepts, including Common Table Expressions (CTEs), subqueries, and the differences between `NOT IN` and `NOT EXISTS`. It also assisted with understanding the pandas comparisons in Step 7 and explaining portions of the code.
+**ChatGPT ** was used to explain SQL concepts, including Common Table Expressions (CTEs), subqueries, and the differences between `NOT IN` and `NOT EXISTS`. It also assisted with understanding the pandas comparisons in Step 7 and explaining portions of the code.
 
 AI tools were used for coding assistance, clarification, and learning. The team remained responsible for reviewing the work, validating the results, and interpreting the findings.
 
