@@ -129,17 +129,25 @@ The Makefile:
 3. Rebuilds `data/movielens.db` from scratch.
 4. Loads the records into the database.
 5. Logs rejected rows to `output/rejected.csv`.
+6. Runs every query in `sql/queries/` and saves each result to `output/results/<query>.csv`.
 
-If the installed Python environment uses an older SQLite version, use a newer Python environment that includes SQLite 3.37 or later.
+If your `python3` has an SQLite older than 3.37, point `make` at a newer Python
+(for example a conda environment):
+
+```bash
+make PYTHON=python
+```
 
 ### Running SQL Queries
 
-The SQL queries are stored in `sql/queries/`.
+The SQL queries are stored in `sql/queries/`. `make` runs all of them through
+`src/run_queries.py`; a file with several statements (such as
+`step7b_not_in_vs_not_exists.sql`) gets one result file per statement.
 
-For example, the following command executes the query identifying the ten most-rated movies:
+To run a single query by hand, for example the ten most-rated movies:
 
 ```bash
-python3 -c "import sqlite3; print(sqlite3.connect('data/movielens.db').execute(open('sql/queries/q1_top10_most_rated.sql').read()).fetchall())"
+python -c "import sqlite3; print(sqlite3.connect('data/movielens.db').execute(open('sql/queries/q1_top10_most_rated.sql').read()).fetchall())"
 ```
 
 ## 6. Repository Structure
