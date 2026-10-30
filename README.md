@@ -91,3 +91,5 @@ Claude (Anthropic) was used to draft `src/load.py`, `src/download.py`, the
 `Makefile` and the SQL query files, and to explain the syntax and reasoning
 behind them. It also helped draft parts of `WRITEUP.md`. I ran every script and
 query myself, checked the results against the data, and wrote the predictions.
+
+ChatGPT was helped with understanding SQL concepts, specifically with CTE and subqueries. I also used it to explain the NOT IN vs NOT Exists because I was not sure about it. It was also used in Step 7 to help me do pandas comparisons and it was used to hep me understand code. 

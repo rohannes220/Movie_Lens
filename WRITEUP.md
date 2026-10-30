@@ -86,3 +86,81 @@ per genre of its movie, so 100,000 ratings become 212,595 (rating, genre) rows.
 **Q6 why EXCEPT.** EXCEPT keeps movies in the first set (rated by students) that are
 not in the second (rated by programmers). UNION would merge both sets, and
 INTERSECT would keep only movies rated by both.
+
+## Step 6 – Build a Query from Named Steps
+
+### 6a. CTEs and row counts
+
+We used Common Table Expressions (CTEs) to find movies whose mean rating was at least 0.5 higher than their genre's mean rating, considering only movies with at least 30 ratings.
+
+| Step | Actual rows | Explanation |
+|---|---:|---|
+| genre_avg | 19 | Average rating for each genre. |
+| movie_avg | 806 | Movies with at least 30 ratings. |
+| movie_comparison | 1,610 | Each qualifying movie matched with its genres. |
+| final_result | 147 | Movie-genre comparisons meeting the 0.5 threshold. |
+
+The row count increased from 806 to 1,610 because movies can belong to multiple genres. The final result contained 147 rows after filtering out comparisons that did not meet the rating threshold.
+
+### 6b. Multiple genres
+
+We chose to compare movies against every genre they belong to instead of selecting just one. For example, Star Wars (1977) belongs to both Action and Sci-Fi. Its average rating was approximately 4.36, compared with 3.48 for Action and 3.56 for Sci-Fi.
+
+Comparing against each genre provides a more complete picture of the movie's performance.
+
+### 6c. CTEs vs. nested subqueries
+
+We rewrote the query using nested subqueries instead of CTEs. Both versions used the same calculations and filtering conditions and returned the same qualifying movie-genre comparisons.
+
+We preferred the CTE version because each calculation had a clear name and could be checked separately. The nested subquery version was harder to debug because the calculations were embedded inside the main query.
+
+## Step 7 – Missing Values in SQL and Pandas
+
+### 7a. NULL values
+
+We checked the database for missing values. Only the `movies` table contained NULL values.
+
+| Column | NULL count |
+|---|---:|
+| release_date | 1 |
+| video_release_date | 1,682 |
+| imdb_url | 3 |
+
+All 1,682 movies had a missing `video_release_date`, suggesting that this field was not populated in the dataset. The other tables contained no NULL values.
+
+### 7b. NOT IN vs. NOT EXISTS
+
+We tested how `NOT IN` and `NOT EXISTS` behave when NULL values are involved.
+
+| Query | Actual rows |
+|---|---:|
+| NOT IN | 0 |
+| NOT EXISTS | 1 |
+
+The difference occurred because `NOT IN` can produce an UNKNOWN result when the subquery contains NULL. `NOT EXISTS` checks for matching rows and avoids this particular issue.
+
+This demonstrates why NULL values must be considered when writing SQL queries.
+
+### 7c. SQL vs. pandas
+
+We loaded the `movies` table into pandas using `pd.read_sql()`.
+
+The `movie_id` column was represented as `int64`, while the text columns were represented as string or object types.
+
+The missing-value counts matched SQL: 1 missing release date, 1,682 missing video release dates, and 3 missing IMDb URLs.
+
+### 7d. Reproducing Step 5 in pandas
+
+We reproduced the Step 5 query for the ten most-rated movies using pandas.
+
+We used `groupby()` to count ratings, `merge()` to add movie titles, and `rank()` to rank the results.
+
+Both SQL and pandas returned the same ten movies with matching rating counts. Star Wars (1977) ranked first with 583 ratings, followed by Contact (1997) with 509 and Fargo (1996) with 508.
+
+## Step 8 – Where SQL Earns Its Place
+
+We found the Step 6 query easier to express in SQL than in pandas because it involved multiple joins, averages, and filtering conditions.
+
+Using CTEs allowed us to separate the calculations into smaller steps. First, we calculated genre averages. Then we calculated movie averages and filtered for movies with at least 30 ratings. Finally, we joined the results and compared the averages.
+
+In pandas, the same process would require multiple `groupby()` and `merge()` operations. SQL made the relationships between tables and the filtering logic easier to understand and debug.
